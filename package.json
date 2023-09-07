@@ -1,0 +1,37 @@
+{
+  "name": "rz-template-cli",
+  "version": "1.0.0",
+  "description": "CLI tool for rz-template",
+  "main": "dist/cli-new.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rustyzone/rz-template-cli.git"
+  },
+  "keywords": [],
+  "author": "Rusty Zone",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rustyzone/rz-template-cli/issues"
+  },
+  "homepage": "https://github.com/rustyzone/rz-template-cli#readme",
+  "devDependencies": {
+    "@types/figlet": "^1.5.6",
+    "@types/inquirer": "^9.0.3",
+    "@types/node": "^20.5.9",
+    "@types/shelljs": "^0.8.12",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "commander": "^11.0.0",
+    "enquirer": "^2.4.1",
+    "execa": "^8.0.1",
+    "figlet": "^1.6.0",
+    "inquirer": "^9.2.10",
+    "shelljs": "^0.8.5",
+    "yargs": "^17.7.2"
+  }
+}
