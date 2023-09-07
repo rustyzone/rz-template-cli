@@ -77,7 +77,6 @@ function handleSelectedOption(selectedOption: string, directory: string) {
 
   // mention to user to paste command into terminal
   console.log("Paste command into terminal to change directory & then install dependencies.");
-
 }
 
 program

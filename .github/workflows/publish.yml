@@ -1,15 +1,12 @@
-name: "publish package to npm"
+name: "Publish package to NPM"
 
 on:
   push:
-    tags:
-      - "*"
     branches:
       - main
 
 jobs:
   publish:
-    if: ${{ github.event.ref_type == 'tag' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
       - name: checkout

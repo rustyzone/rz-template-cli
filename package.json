@@ -1,11 +1,16 @@
 {
   "name": "rz-template-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CLI tool for rz-template",
   "main": "dist/cli-new.js",
   "scripts": {
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test yet, coming soon...\" && exit 1",
+    "commit": "git add . && git commit -m 'VERSION'",
+    "version-patch": "npm version patch",
+    "create-tag": "git tag -a v$(node -p -e \"require('./package.json').version\") -m 'v$(node -p -e \"require('./package.json').version\")'",
+    "push-tag": "git push origin v$(node -p -e \"require('./package.json').version\")",
+    "release": "npm run version-patch && npm run commit && npm run create-tag && npm run push-tag && git push origin --tags"
   },
   "repository": {
     "type": "git",
