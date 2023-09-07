@@ -1,5 +1,5 @@
 {
-  "name": "rz-template-cli",
+  "name": "rz-templates-cli",
   "version": "1.0.1",
   "description": "CLI tool for rz-template",
   "main": "dist/cli-new.js",
