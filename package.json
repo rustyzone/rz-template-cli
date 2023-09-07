@@ -5,7 +5,7 @@
   "main": "dist/cli-new.js",
   "husky": {
     "hooks": {
-      "post-commit": "git push origin --tags  "
+      "post-commit": "git push origin --tags  && git push origin main"
     }
   },
   "bin": {
