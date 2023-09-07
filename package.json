@@ -3,6 +3,14 @@
   "version": "1.0.2",
   "description": "CLI tool for rz-template",
   "main": "dist/cli-new.js",
+  "husky": {
+    "hooks": {
+      "post-commit": "git push origin --tags  "
+    }
+  },
+  "bin": {
+    "rz-template": "./dist/cli-new.js"
+  },
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: no test yet, coming soon...\" && exit 1",
