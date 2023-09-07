@@ -2,51 +2,38 @@ import { program } from "commander";
 import shell from "shelljs";
 import figlet from "figlet";
 import { prompt } from "enquirer";
+import colors from "colors";
+import path from "path";
 
 interface ResponseOpt {
   selectedOption: string;
 }
 
-const getRepositoryURL = (selectedTemplate: string): string => {
-  // Customize this function to map selected templates to repository URLs
-  // Return the appropriate URL based on the user's selection.
-  return `example-url-for-${selectedTemplate}`;
-};
-
 function handleSelectedOption(selectedOption: string, directory: string) {
   // Customize this function to map selected templates to corresponding repository URLs
-  const repositoryURL = getRepositoryURL(selectedOption);
-
+ 
   // Determine the clone directory
-  const cloneDirectory = directory || ".";
+  // const cloneDirectory = directory || ".";
 
-  // log path to the clone directory wuth full path and cwd
-  console.log(`Clone directory: ${shell.pwd()}/${cloneDirectory}`);
-
-  console.log(`Cloning ${repositoryURL} into ${cloneDirectory}...`);
-
+  const cloneDirectory = path.resolve(directory || ".");
+  
   let repoUrl: string;
-
+  
   switch (selectedOption) {
-    case "Option 1":
-      console.log("You selected Option 1.");
-      repoUrl = "https://github.com/rustyzone/rz-template-react.git";
-      break;
-    case "Option 2":
-      console.log("You selected Option 2.");
-      repoUrl = "https://github.com/rustyzone/rz-template-tailwind.git";
-      break;
-    case "Option 3":
-      console.log("You selected Option 3.");
-      repoUrl = "https://github.com/rustyzone/rz-template-tailwind.git";
-      break;
-    // Add more cases for additional options
+    case "React, Tailwind":
+      repoUrl = "https://github.com/rustyzone/template-vite-react";
+    break;
+    case "React, Tailwind & Supabase":
+        repoUrl = "https://github.com/rustyzone/template-vite-rts";
+    break;
+      // Add more cases for additional options
     default:
       console.error("Invalid option err msg");
       // exit process with failure
       process.exit(1);
-  }
-
+    }
+        
+  console.log(`Cloning ${repoUrl} into ${cloneDirectory}`);
   // before clone check if directory exists && check repo url is valid
   if (shell.test("-d", cloneDirectory)) {
     console.error("Directory already exists.");
@@ -71,7 +58,7 @@ function handleSelectedOption(selectedOption: string, directory: string) {
   // Run the Git clone command using ShellJS
 
   const gitCloneResult = shell.exec(
-    `git clone ${repositoryURL} ${cloneDirectory}`
+    `git clone ${repoUrl} ${cloneDirectory}`
   );
 
   if (gitCloneResult.code !== 0) {
@@ -81,19 +68,16 @@ function handleSelectedOption(selectedOption: string, directory: string) {
     process.exit(1);
   } else {
     console.log("Clone successful.");
+
   }
 
-  // cd into the clone directory and run yarn install / npm install
-  // ask for project name and update package.json and manifest.json
-  shell.cd(cloneDirectory);
+  console.log(`Run ${colors.green(`cd ${directory}`)} to begin working on the project.`);
+  // copy command to clipboard
+  shell.exec(`echo cd ${directory} | pbcopy`);
 
-  // Run yarn install or npm install
-  const installResult = shell.exec("yarn install");
-  if (installResult.code !== 0) {
-    console.error("Error:", installResult.stderr);
-  } else {
-    console.log("Install successful.");
-  }
+  // mention to user to paste command into terminal
+  console.log("Paste command into terminal to change directory & then install dependencies.");
+
 }
 
 program
@@ -106,20 +90,20 @@ program
   .option("-d, --directory <directory>", "Specify a directory to clone into")
   .parse(process.argv);
 
-console.log(figlet.textSync("Rusty Zone Template CLI"));
+console.log(figlet.textSync("Rusty Zone Templates CLI"));
 
 async function main() {
   const { template, directory } = program.opts();
 
   if (!template) {
-    console.error("Please specify a template with the -t or --template flag.");
+    console.log("Select a template below by using the arrow keys and pressing enter.");
+    // console.error("Please specify a template with the -t or --template flag.");
   } else {
     // Customize this function to map selected templates to corresponding repository URLs
     handleSelectedOption(template, directory);
   }
 
   if (!template) {
-    // || program.option) {
     // If the template is not specified or if the option is provided, show the options.
     await showOptions();
   }
@@ -127,20 +111,17 @@ async function main() {
 
 async function showOptions() {
   const options = [
-    "Option 1",
-    "Option 2",
-    "Option 3",
+    "React, Tailwind",
+    "React, Tailwind & Supabase",
     // Add more options as needed
   ];
 
   const response: ResponseOpt = await prompt({
     type: "select",
     name: "selectedOption",
-    message: "Select an option:",
+    message: "Select template:",
     choices: options,
   });
-
-  // Customize this function to map selected options to corresponding actions
 
   // if no directory is specified, ask user for directory
   const directory: any = await prompt({

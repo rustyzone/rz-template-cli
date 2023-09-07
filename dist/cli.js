@@ -16,32 +16,23 @@ const commander_1 = require("commander");
 const shelljs_1 = __importDefault(require("shelljs"));
 const figlet_1 = __importDefault(require("figlet"));
 const enquirer_1 = require("enquirer");
-const getRepositoryURL = (selectedTemplate) => {
-    return `example-url-for-${selectedTemplate}`;
-};
+const colors_1 = __importDefault(require("colors"));
+const path_1 = __importDefault(require("path"));
 function handleSelectedOption(selectedOption, directory) {
-    const repositoryURL = getRepositoryURL(selectedOption);
-    const cloneDirectory = directory || ".";
-    console.log(`Clone directory: ${shelljs_1.default.pwd()}/${cloneDirectory}`);
-    console.log(`Cloning ${repositoryURL} into ${cloneDirectory}...`);
+    const cloneDirectory = path_1.default.resolve(directory || ".");
     let repoUrl;
     switch (selectedOption) {
-        case "Option 1":
-            console.log("You selected Option 1.");
-            repoUrl = "https://github.com/rustyzone/rz-template-react.git";
+        case "React, Tailwind":
+            repoUrl = "https://github.com/rustyzone/template-vite-react";
             break;
-        case "Option 2":
-            console.log("You selected Option 2.");
-            repoUrl = "https://github.com/rustyzone/rz-template-tailwind.git";
-            break;
-        case "Option 3":
-            console.log("You selected Option 3.");
-            repoUrl = "https://github.com/rustyzone/rz-template-tailwind.git";
+        case "React, Tailwind & Supabase":
+            repoUrl = "https://github.com/rustyzone/template-vite-rts";
             break;
         default:
             console.error("Invalid option err msg");
             process.exit(1);
     }
+    console.log(`Cloning ${repoUrl} into ${cloneDirectory}`);
     if (shelljs_1.default.test("-d", cloneDirectory)) {
         console.error("Directory already exists.");
         if (shelljs_1.default.ls(cloneDirectory).length > 0) {
@@ -56,7 +47,7 @@ function handleSelectedOption(selectedOption, directory) {
         console.log("Exit process with failure.");
         process.exit(1);
     }
-    const gitCloneResult = shelljs_1.default.exec(`git clone ${repositoryURL} ${cloneDirectory}`);
+    const gitCloneResult = shelljs_1.default.exec(`git clone ${repoUrl} ${cloneDirectory}`);
     if (gitCloneResult.code !== 0) {
         console.error("Error:", gitCloneResult.stderr);
         console.log("Exit process with failure.");
@@ -65,14 +56,9 @@ function handleSelectedOption(selectedOption, directory) {
     else {
         console.log("Clone successful.");
     }
-    shelljs_1.default.cd(cloneDirectory);
-    const installResult = shelljs_1.default.exec("yarn install");
-    if (installResult.code !== 0) {
-        console.error("Error:", installResult.stderr);
-    }
-    else {
-        console.log("Install successful.");
-    }
+    console.log(`Run ${colors_1.default.green(`cd ${directory}`)} to begin working on the project.`);
+    shelljs_1.default.exec(`echo cd ${directory} | pbcopy`);
+    console.log("Paste command into terminal to change directory & then install dependencies.");
 }
 commander_1.program
     .version("1.0.0")
@@ -80,12 +66,12 @@ commander_1.program
     .option("-t, --template <template>", "Select a template to continue (e.g., react, tailwind)")
     .option("-d, --directory <directory>", "Specify a directory to clone into")
     .parse(process.argv);
-console.log(figlet_1.default.textSync("Rusty Zone Template CLI"));
+console.log(figlet_1.default.textSync("Rusty Zone Templates CLI"));
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         const { template, directory } = commander_1.program.opts();
         if (!template) {
-            console.error("Please specify a template with the -t or --template flag.");
+            console.log("Select a template below by using the arrow keys and pressing enter.");
         }
         else {
             handleSelectedOption(template, directory);
@@ -98,14 +84,13 @@ function main() {
 function showOptions() {
     return __awaiter(this, void 0, void 0, function* () {
         const options = [
-            "Option 1",
-            "Option 2",
-            "Option 3",
+            "React, Tailwind",
+            "React, Tailwind & Supabase",
         ];
         const response = yield (0, enquirer_1.prompt)({
             type: "select",
             name: "selectedOption",
-            message: "Select an option:",
+            message: "Select template:",
             choices: options,
         });
         const directory = yield (0, enquirer_1.prompt)({
