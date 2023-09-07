@@ -3,7 +3,7 @@
   <h1 align="center">rz-template-cli</h1>
 
   <p align="center">
-   Readme coming soon
+   [WIP] Readme coming soon
     <br/>
     <br/>
   </p>
@@ -29,3 +29,5 @@ Before you begin, ensure you have the following prerequisites installed on your 
 
    ```bash
    npm install -g rz-templates-cli
+
+3, Use by running, `rz-template` and then following the instructions.
