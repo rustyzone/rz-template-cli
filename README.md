@@ -28,6 +28,7 @@ Before you begin, ensure you have the following prerequisites installed on your 
 2. Install `rz-templates-cli` globally by running the following command:
 
    ```bash
-   npm install -g rz-templates-cli
+   npm install -g rz-templates-cli@latest
 
-3, Use by running, `rz-template` and then following the instructions.
+
+3. Use by running, `rzt` and then following the instructions.
