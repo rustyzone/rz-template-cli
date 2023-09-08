@@ -19,6 +19,7 @@ const figlet_1 = __importDefault(require("figlet"));
 const enquirer_1 = require("enquirer");
 const colors_1 = __importDefault(require("colors"));
 const path_1 = __importDefault(require("path"));
+const { version } = require("../package.json");
 function handleSelectedOption(selectedOption, directory) {
     // Customize this function to map selected templates to corresponding repository URLs
     // Determine the clone directory
@@ -76,7 +77,7 @@ function handleSelectedOption(selectedOption, directory) {
     console.log("Paste command into terminal to change directory & then install dependencies.");
 }
 commander_1.program
-    .version("1.0.0")
+    .version(version)
     .description("CLI tool for rz-template")
     .option("-t, --template <template>", "Select a template to continue (e.g., react, tailwind)")
     .option("-d, --directory <directory>", "Specify a directory to clone into")

@@ -7,6 +7,8 @@ import { prompt } from "enquirer";
 import colors from "colors";
 import path from "path";
 
+const { version } = require("../package.json");
+
 interface ResponseOpt {
   selectedOption: string;
 }
@@ -82,7 +84,7 @@ function handleSelectedOption(selectedOption: string, directory: string) {
 }
 
 program
-  .version("1.0.0")
+  .version(version)
   .description("CLI tool for rz-template")
   .option(
     "-t, --template <template>",
