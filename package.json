@@ -9,7 +9,7 @@
     }
   },
   "bin": {
-    "rz-template": "./dist/cli-new.js"
+    "rzt": "./dist/cli.js"
   },
   "scripts": {
     "build": "tsc",
