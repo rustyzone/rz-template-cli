@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -19,6 +20,9 @@ const enquirer_1 = require("enquirer");
 const colors_1 = __importDefault(require("colors"));
 const path_1 = __importDefault(require("path"));
 function handleSelectedOption(selectedOption, directory) {
+    // Customize this function to map selected templates to corresponding repository URLs
+    // Determine the clone directory
+    // const cloneDirectory = directory || ".";
     const cloneDirectory = path_1.default.resolve(directory || ".");
     let repoUrl;
     switch (selectedOption) {
@@ -28,28 +32,37 @@ function handleSelectedOption(selectedOption, directory) {
         case "React, Tailwind & Supabase":
             repoUrl = "https://github.com/rustyzone/template-vite-rts";
             break;
+        // Add more cases for additional options
         default:
             console.error("Invalid option err msg");
+            // exit process with failure
             process.exit(1);
     }
     console.log(`Cloning ${repoUrl} into ${cloneDirectory}`);
+    // before clone check if directory exists && check repo url is valid
     if (shelljs_1.default.test("-d", cloneDirectory)) {
         console.error("Directory already exists.");
+        // chck if directory is empty
         if (shelljs_1.default.ls(cloneDirectory).length > 0) {
             console.error("Directory is not empty.");
+            // exit
             console.log("Exit process with failure.");
             process.exit(1);
         }
     }
+    // check if repo url is valid
     const isValidRepo = shelljs_1.default.exec(`git ls-remote ${repoUrl}`).code === 0;
     if (!isValidRepo) {
         console.error("Invalid repository URL.");
+        // exit
         console.log("Exit process with failure.");
         process.exit(1);
     }
+    // Run the Git clone command using ShellJS
     const gitCloneResult = shelljs_1.default.exec(`git clone ${repoUrl} ${cloneDirectory}`);
     if (gitCloneResult.code !== 0) {
         console.error("Error:", gitCloneResult.stderr);
+        // exit
         console.log("Exit process with failure.");
         process.exit(1);
     }
@@ -57,7 +70,9 @@ function handleSelectedOption(selectedOption, directory) {
         console.log("Clone successful.");
     }
     console.log(`Run ${colors_1.default.green(`cd ${directory}`)} to begin working on the project.`);
+    // copy command to clipboard
     shelljs_1.default.exec(`echo cd ${directory} | pbcopy`);
+    // mention to user to paste command into terminal
     console.log("Paste command into terminal to change directory & then install dependencies.");
 }
 commander_1.program
@@ -72,11 +87,14 @@ function main() {
         const { template, directory } = commander_1.program.opts();
         if (!template) {
             console.log("Select a template below by using the arrow keys and pressing enter.");
+            // console.error("Please specify a template with the -t or --template flag.");
         }
         else {
+            // Customize this function to map selected templates to corresponding repository URLs
             handleSelectedOption(template, directory);
         }
         if (!template) {
+            // If the template is not specified or if the option is provided, show the options.
             yield showOptions();
         }
     });
@@ -86,6 +104,7 @@ function showOptions() {
         const options = [
             "React, Tailwind",
             "React, Tailwind & Supabase",
+            // Add more options as needed
         ];
         const response = yield (0, enquirer_1.prompt)({
             type: "select",
@@ -93,6 +112,7 @@ function showOptions() {
             message: "Select template:",
             choices: options,
         });
+        // if no directory is specified, ask user for directory
         const directory = yield (0, enquirer_1.prompt)({
             type: "input",
             name: "directory",
