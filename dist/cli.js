@@ -78,6 +78,9 @@ function handleSelectedOption(selectedOption, directory) {
         shelljs_1.default.rm("-rf", `${cloneDirectory}/src/Onboarding.tsx`);
         shelljs_1.default.rm("-rf", `${cloneDirectory}/src/Onboarding-main.tsx`);
         console.log("Template adjustment successful.");
+        // TODO: change this when changes are made to the template
+        // remove "input: { onboarding: `src/pages/onboarding/index.html` }," from vite.config.js
+        shelljs_1.default.sed("-i", "input: { onboarding: `src/pages/onboarding/index.html` },", "", `${cloneDirectory}/vite.config.js`);
         // replace line  "        "src/pages/onboarding/index.html"," from manifest.json
         shelljs_1.default.sed("-i", `"src/pages/onboarding/index.html",`, "", `${cloneDirectory}/manifest.json`);
         console.log("Manifest adjustments successful.");

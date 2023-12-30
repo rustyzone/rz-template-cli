@@ -85,6 +85,8 @@ function handleSelectedOption(selectedOption: string, directory: string) {
 
     console.log("Template adjustment successful.");
     // TODO: change this when changes are made to the template
+    // remove "input: { onboarding: `src/pages/onboarding/index.html` }," from vite.config.js
+    shell.sed("-i", "input: { onboarding: `src/pages/onboarding/index.html` },", "", `${cloneDirectory}/vite.config.js`);
     // replace line  "        "src/pages/onboarding/index.html"," from manifest.json
     shell.sed("-i", `"src/pages/onboarding/index.html",`, "", `${cloneDirectory}/manifest.json`);
     console.log("Manifest adjustments successful.");
