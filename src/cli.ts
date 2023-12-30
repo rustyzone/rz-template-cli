@@ -24,6 +24,8 @@ function handleSelectedOption(selectedOption: string, directory: string) {
   let repoUrl: string;
   
   switch (selectedOption) {
+    case "Vite with Content":
+      repoUrl = "https://github.com/rustyzone/template-vite-react";
     case "React, Tailwind":
       repoUrl = "https://github.com/rustyzone/template-vite-react";
     break;
@@ -75,6 +77,19 @@ function handleSelectedOption(selectedOption: string, directory: string) {
 
   }
 
+  if (selectedOption === "Vite with Content") {
+    // remove pages folder from vite with content template
+    shell.rm("-rf", `${cloneDirectory}/src/pages`);
+    shell.rm("-rf", `${cloneDirectory}/src/Onboarding.tsx`);
+    shell.rm("-rf", `${cloneDirectory}/src/Onboarding-main.tsx`);
+
+    console.log("Template adjustment successful.");
+    // TODO: change this when changes are made to the template
+    // replace line  "        "src/pages/onboarding/index.html"," from manifest.json
+    shell.sed("-i", `"src/pages/onboarding/index.html",`, "", `${cloneDirectory}/manifest.json`);
+    console.log("Manifest adjustments successful.");
+  }
+
   console.log(`Run ${colors.green(`cd ${directory}`)} to begin working on the project.`);
   // copy command to clipboard
   shell.exec(`echo cd ${directory} | pbcopy`);
@@ -114,6 +129,7 @@ async function main() {
 
 async function showOptions() {
   const options = [
+    "Vite with Content",
     "React, Tailwind",
     "React, Tailwind & Supabase",
     // Add more options as needed

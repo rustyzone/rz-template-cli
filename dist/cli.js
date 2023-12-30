@@ -27,6 +27,8 @@ function handleSelectedOption(selectedOption, directory) {
     const cloneDirectory = path_1.default.resolve(directory || ".");
     let repoUrl;
     switch (selectedOption) {
+        case "Vite with Content":
+            repoUrl = "https://github.com/rustyzone/template-vite-react";
         case "React, Tailwind":
             repoUrl = "https://github.com/rustyzone/template-vite-react";
             break;
@@ -70,6 +72,16 @@ function handleSelectedOption(selectedOption, directory) {
     else {
         console.log("Clone successful.");
     }
+    if (selectedOption === "Vite with Content") {
+        // remove pages folder from vite with content template
+        shelljs_1.default.rm("-rf", `${cloneDirectory}/src/pages`);
+        shelljs_1.default.rm("-rf", `${cloneDirectory}/src/Onboarding.tsx`);
+        shelljs_1.default.rm("-rf", `${cloneDirectory}/src/Onboarding-main.tsx`);
+        console.log("Template adjustment successful.");
+        // replace line  "        "src/pages/onboarding/index.html"," from manifest.json
+        shelljs_1.default.sed("-i", `"src/pages/onboarding/index.html",`, "", `${cloneDirectory}/manifest.json`);
+        console.log("Manifest adjustments successful.");
+    }
     console.log(`Run ${colors_1.default.green(`cd ${directory}`)} to begin working on the project.`);
     // copy command to clipboard
     shelljs_1.default.exec(`echo cd ${directory} | pbcopy`);
@@ -103,6 +115,7 @@ function main() {
 function showOptions() {
     return __awaiter(this, void 0, void 0, function* () {
         const options = [
+            "Vite with Content",
             "React, Tailwind",
             "React, Tailwind & Supabase",
             // Add more options as needed
